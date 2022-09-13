@@ -1,0 +1,29 @@
+apiVersion: 1
+  
+deleteDatasources:
+  - name: prometheus
+    orgId: 1
+
+datasources:
+- name: Prometheus-Gen
+  type: prometheus
+  orgId: 1
+  typeLogoUrl:
+  access: proxy
+  url: "http://prometheus:9090/"
+  password:
+  user:
+  database:
+  basicAuth: false
+  basicAuthUser:
+  basicAuthPassword:
+  withCredentials: false
+  timeInterval: 10s
+  jsonData:
+    httpMethod: GET
+    keepCookies: []
+    timeInterval: 10s
+    tlsSkipVerify: true
+  secureJsonFields:
+  version: 1
+  readOnly: false

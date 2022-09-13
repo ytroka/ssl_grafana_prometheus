@@ -1,0 +1,60 @@
+version: '3.9'
+
+networks:
+  monitoring:
+    driver: bridge
+    
+volumes:
+  prometheus_data: {}
+
+
+services:
+
+  prometheus:
+    image: prom/prometheus:latest
+    volumes:
+      - ./prometheus:/etc/prometheus/
+    container_name: prometheus
+    depends_on:
+      - ssl-exporter
+    hostname: prometheus
+    command:
+      - --config.file=/etc/prometheus/prometheus.yml
+    ports:
+      - 9090:9090
+    restart: unless-stopped
+    environment:
+      TZ: "Europe/Moscow"
+    networks:
+      - monitoring
+
+  grafana:
+    image: grafana/grafana
+    user: root
+    depends_on:
+      - prometheus
+    ports:
+      - 3000:3000
+    volumes:
+      - ./grafana:/var/lib/grafana
+      - ./grafana/provisioning/:/etc/grafana/provisioning/
+      - ./grafana/dashboards:/grafana/dashboards
+    container_name: grafana
+    hostname: grafana
+    restart: unless-stopped
+    environment:
+      TZ: "Europe/Moscow"
+    networks:
+      - monitoring
+    
+  ssl-exporter:
+    image: ribbybibby/ssl-exporter
+    container_name: ssl-exporter
+    hostname: ssl-exporter
+    restart: unless-stopped
+    environment:
+      TZ: "Europe/Moscow"
+    ports:
+      - 9219:9219
+    networks:
+      - monitoring

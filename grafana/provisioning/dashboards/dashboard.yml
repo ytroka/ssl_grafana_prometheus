@@ -1,0 +1,16 @@
+# Description - https://grafana.com/docs/grafana/latest/administration/provisioning/#dashboards
+
+apiVersion: 1
+
+providers:
+- name: 'default'
+  orgId: 1
+  folder: ''
+  folderUid: ''
+  type: file
+  disableDeletion: true
+  editable: true
+  updateIntervalSeconds: 10
+  allowUiUpdates: false
+  options:
+    path: /grafana/dashboards/
