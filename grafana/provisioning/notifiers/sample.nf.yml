@@ -1,0 +1,15 @@
+# # config file version
+apiVersion: 1
+
+notifiers:
+  - name: tlgr-alert
+    type: telegram
+    uid: telegram
+    is_default: true
+    send_reminder: true
+    frequency: 1h
+    disable_resolve_message: true
+    settings:
+      bottoken: "5648292552:AAHQ3rmeCWiKYy4wL_f_AGoYYQdR15GZf9I"
+      chatid: "-1001695823036"
+      uploadImage: true

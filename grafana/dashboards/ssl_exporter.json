@@ -3,43 +3,35 @@
     "list": [
       {
         "builtIn": 1,
-        "datasource": {
-          "type": "datasource",
-          "uid": "grafana"
-        },
+        "datasource": "-- Grafana --",
         "enable": true,
         "hide": true,
         "iconColor": "rgba(0, 211, 255, 1)",
         "name": "Annotations & Alerts",
-        "target": {
-          "limit": 100,
-          "matchAny": false,
-          "tags": [],
-          "type": "dashboard"
-        },
         "type": "dashboard"
       }
     ]
   },
   "description": "Shows certitificate expiration times, as well as failed ssl connects",
   "editable": true,
-  "fiscalYearStartMonth": 0,
   "gnetId": 11279,
   "graphTooltip": 0,
   "id": 1,
+  "iteration": 1663145437418,
   "links": [],
-  "liveNow": false,
   "panels": [
     {
+      "cacheTimeout": null,
       "columns": [],
-      "datasource": {
-        "type": "prometheus",
-        "uid": "PAD1F3CD648C6722B"
-      },
+      "datasource": "Prometheus-Gen",
       "description": "",
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
       "fontSize": "100%",
       "gridPos": {
-        "h": 21,
+        "h": 16,
         "w": 24,
         "x": 0,
         "y": 0
@@ -47,12 +39,13 @@
       "id": 2,
       "interval": "",
       "links": [],
+      "pageSize": null,
       "pluginVersion": "6.1.6",
       "scroll": true,
       "showHeader": true,
       "sort": {
         "col": 7,
-        "desc": false
+        "desc": true
       },
       "styles": [
         {
@@ -79,6 +72,7 @@
           "$$hashKey": "object:1750",
           "alias": "",
           "align": "auto",
+          "colorMode": null,
           "colors": [
             "rgba(245, 54, 54, 0.9)",
             "rgba(237, 129, 40, 0.89)",
@@ -96,6 +90,7 @@
           "$$hashKey": "object:1751",
           "alias": "",
           "align": "auto",
+          "colorMode": null,
           "colors": [
             "rgba(245, 54, 54, 0.9)",
             "rgba(237, 129, 40, 0.89)",
@@ -113,6 +108,7 @@
           "$$hashKey": "object:1752",
           "alias": "",
           "align": "auto",
+          "colorMode": null,
           "colors": [
             "rgba(245, 54, 54, 0.9)",
             "rgba(237, 129, 40, 0.89)",
@@ -135,6 +131,7 @@
           "$$hashKey": "object:1753",
           "alias": "",
           "align": "auto",
+          "colorMode": null,
           "colors": [
             "rgba(245, 54, 54, 0.9)",
             "rgba(237, 129, 40, 0.89)",
@@ -152,6 +149,7 @@
           "$$hashKey": "object:1754",
           "alias": "",
           "align": "auto",
+          "colorMode": null,
           "colors": [
             "rgba(245, 54, 54, 0.9)",
             "rgba(237, 129, 40, 0.89)",
@@ -168,10 +166,6 @@
       ],
       "targets": [
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "PAD1F3CD648C6722B"
-          },
           "expr": "((ssl_cert_not_after{instance=~\"$instance\",job=~\"$job\"} - time())/24/60/60)",
           "format": "table",
           "instant": true,
@@ -181,6 +175,8 @@
           "refId": "A"
         }
       ],
+      "timeFrom": null,
+      "timeShift": null,
       "title": "SSL Certificates Endpoints",
       "transform": "table",
       "type": "table-old"
@@ -192,7 +188,7 @@
           {
             "evaluator": {
               "params": [
-                0.1
+                10
               ],
               "type": "lt"
             },
@@ -202,7 +198,7 @@
             "query": {
               "params": [
                 "A",
-                "24h",
+                "1h",
                 "now"
               ]
             },
@@ -213,16 +209,16 @@
             "type": "query"
           }
         ],
-        "executionErrorState": "keep_state",
-        "for": "5m",
-        "frequency": "1m",
+        "executionErrorState": "alerting",
+        "for": "60m",
+        "frequency": "10m",
         "handler": 1,
         "message": "One of the certificates will expire soon. Check out Grafana.",
         "name": "Certtificates alert",
-        "noDataState": "ok",
+        "noDataState": "alerting",
         "notifications": [
           {
-            "uid": "notifier2"
+            "uid": "telegram"
           }
         ]
       },
@@ -230,9 +226,10 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": {
-        "type": "prometheus",
-        "uid": "PAD1F3CD648C6722B"
+      "datasource": "Prometheus-Gen",
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
       },
       "fill": 1,
       "fillGradient": 0,
@@ -240,7 +237,7 @@
         "h": 10,
         "w": 24,
         "x": 0,
-        "y": 21
+        "y": 16
       },
       "hiddenSeries": false,
       "id": 17,
@@ -261,7 +258,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "9.1.5",
+      "pluginVersion": "7.5.10",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -271,18 +268,12 @@
       "steppedLine": false,
       "targets": [
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "PAD1F3CD648C6722B"
-          },
-          "editorMode": "code",
           "exemplar": false,
           "expr": "(ssl_cert_not_after - time())/24/60/60",
           "hide": false,
           "interval": "",
-          "legendFormat": "{{cn}} - {{instance}}",
+          "legendFormat": "{{cn}} - {{issuer_cn}}",
           "queryType": "randomWalk",
-          "range": true,
           "refId": "A"
         }
       ],
@@ -292,11 +283,13 @@
           "fill": true,
           "line": true,
           "op": "lt",
-          "value": 0.1,
+          "value": 10,
           "visible": true
         }
       ],
+      "timeFrom": null,
       "timeRegions": [],
+      "timeShift": null,
       "title": "Сеrtificates expires",
       "tooltip": {
         "shared": true,
@@ -305,27 +298,36 @@
       },
       "type": "graph",
       "xaxis": {
+        "buckets": null,
         "mode": "time",
+        "name": null,
         "show": false,
         "values": []
       },
       "yaxes": [
         {
           "$$hashKey": "object:640",
+          "decimals": null,
           "format": "d",
           "label": "Expires in",
           "logBase": 1,
+          "max": null,
+          "min": null,
           "show": true
         },
         {
           "$$hashKey": "object:641",
           "format": "short",
+          "label": null,
           "logBase": 1,
+          "max": null,
+          "min": null,
           "show": true
         }
       ],
       "yaxis": {
-        "align": false
+        "align": false,
+        "alignLevel": null
       }
     },
     {
@@ -333,10 +335,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": {
-        "type": "prometheus",
-        "uid": "PAD1F3CD648C6722B"
-      },
+      "datasource": "Prometheus-Gen",
       "fieldConfig": {
         "defaults": {
           "links": [
@@ -355,7 +354,7 @@
         "h": 7,
         "w": 20,
         "x": 0,
-        "y": 31
+        "y": 26
       },
       "hiddenSeries": false,
       "id": 6,
@@ -380,7 +379,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "9.1.5",
+      "pluginVersion": "7.5.10",
       "pointradius": 2,
       "points": true,
       "renderer": "flot",
@@ -390,10 +389,6 @@
       "steppedLine": false,
       "targets": [
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "PAD1F3CD648C6722B"
-          },
           "exemplar": true,
           "expr": "(up{job=~\"$job\", instance=~\"$instance\"} == 0 or ssl_probe_success{job=~\"$job\", instance=~\"$instance\"} == 0)^0",
           "format": "time_series",
@@ -404,7 +399,9 @@
         }
       ],
       "thresholds": [],
+      "timeFrom": null,
       "timeRegions": [],
+      "timeShift": null,
       "title": "Failed SSL Connects History",
       "tooltip": {
         "shared": true,
@@ -414,7 +411,9 @@
       "transparent": true,
       "type": "graph",
       "xaxis": {
+        "buckets": null,
         "mode": "time",
+        "name": null,
         "show": true,
         "values": []
       },
@@ -424,6 +423,7 @@
           "format": "short",
           "label": "",
           "logBase": 1,
+          "max": null,
           "min": "0",
           "show": true
         },
@@ -432,105 +432,121 @@
           "format": "short",
           "label": "",
           "logBase": 1,
+          "max": null,
           "min": "0",
           "show": false
         }
       ],
       "yaxis": {
-        "align": false
+        "align": false,
+        "alignLevel": null
       }
     },
     {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "PAD1F3CD648C6722B"
-      },
+      "cacheTimeout": null,
+      "colorBackground": false,
+      "colorPostfix": false,
+      "colorPrefix": false,
+      "colorValue": false,
+      "colors": [
+        "#299c46",
+        "rgba(237, 129, 40, 0.89)",
+        "#d44a3a"
+      ],
+      "datasource": "Prometheus-Gen",
+      "decimals": 0,
       "description": "",
       "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "decimals": 0,
-          "mappings": [
-            {
-              "options": {
-                "match": "null",
-                "result": {
-                  "text": "N/A"
-                }
-              },
-              "type": "special"
-            }
-          ],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "none"
-        },
+        "defaults": {},
         "overrides": []
+      },
+      "format": "none",
+      "gauge": {
+        "maxValue": 100,
+        "minValue": 0,
+        "show": false,
+        "thresholdLabels": false,
+        "thresholdMarkers": true
       },
       "gridPos": {
         "h": 7,
         "w": 4,
         "x": 20,
-        "y": 31
+        "y": 26
       },
       "id": 9,
+      "interval": null,
       "links": [],
-      "maxDataPoints": 100,
-      "options": {
-        "colorMode": "none",
-        "graphMode": "none",
-        "justifyMode": "auto",
-        "orientation": "horizontal",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
+      "mappingType": 1,
+      "mappingTypes": [
+        {
+          "name": "value to text",
+          "value": 1
         },
-        "textMode": "auto"
+        {
+          "name": "range to text",
+          "value": 2
+        }
+      ],
+      "maxDataPoints": 100,
+      "nullPointMode": "connected",
+      "nullText": null,
+      "postfix": "",
+      "postfixFontSize": "50%",
+      "prefix": "",
+      "prefixFontSize": "50%",
+      "rangeMaps": [
+        {
+          "from": "null",
+          "text": "N/A",
+          "to": "null"
+        }
+      ],
+      "sparkline": {
+        "fillColor": "rgba(31, 118, 189, 0.18)",
+        "full": false,
+        "lineColor": "rgb(31, 120, 193)",
+        "show": false,
+        "ymax": null,
+        "ymin": null
       },
-      "pluginVersion": "9.1.5",
+      "tableColumn": "",
       "targets": [
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "PAD1F3CD648C6722B"
-          },
           "expr": "count(max(ssl_cert_not_after{instance=~\"$instance\",job=~\"$job\"}) by (issuer_cn,serial_no))",
           "refId": "A"
         }
       ],
+      "thresholds": "",
+      "timeFrom": null,
+      "timeShift": null,
       "title": "Total Unique Certificates",
       "transparent": true,
-      "type": "stat"
+      "type": "singlestat",
+      "valueFontSize": "80%",
+      "valueMaps": [
+        {
+          "op": "=",
+          "text": "N/A",
+          "value": "null"
+        }
+      ],
+      "valueName": "current"
     },
     {
       "columns": [],
-      "datasource": {
-        "type": "prometheus",
-        "uid": "PAD1F3CD648C6722B"
-      },
+      "datasource": "Prometheus-Gen",
       "description": "Possible reasons:\n- site is down\n- server is down\n- certificate has expired\n- certificate's CA is not trusted by the exporter\n- other connection errors\n- other certificate errors",
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
       "fontSize": "100%",
       "gridPos": {
         "h": 5,
         "w": 24,
         "x": 0,
-        "y": 38
+        "y": 33
       },
       "id": 4,
       "links": [],
@@ -538,6 +554,13 @@
       "pageSize": 10,
       "repeat": "job",
       "repeatDirection": "h",
+      "scopedVars": {
+        "job": {
+          "selected": false,
+          "text": "ssl",
+          "value": "ssl"
+        }
+      },
       "scroll": true,
       "showHeader": true,
       "sort": {
@@ -557,6 +580,7 @@
           "$$hashKey": "object:479",
           "alias": "",
           "align": "auto",
+          "colorMode": null,
           "colors": [
             "rgba(245, 54, 54, 0.9)",
             "rgba(237, 129, 40, 0.89)",
@@ -572,6 +596,7 @@
           "$$hashKey": "object:480",
           "alias": "",
           "align": "auto",
+          "colorMode": null,
           "colors": [
             "rgba(245, 54, 54, 0.9)",
             "rgba(237, 129, 40, 0.89)",
@@ -636,10 +661,6 @@
       ],
       "targets": [
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "PAD1F3CD648C6722B"
-          },
           "exemplar": true,
           "expr": "ssl_probe_success{instance=~\"$instance\",job=~\"$job\"} == 0",
           "format": "table",
@@ -650,16 +671,16 @@
           "refId": "A"
         }
       ],
+      "timeFrom": null,
+      "timeShift": null,
       "title": "Failed SSL Connects - $job",
-      "transform": "timeseries_to_rows",
+      "transform": "table",
       "transparent": true,
       "type": "table-old"
     },
     {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "PAD1F3CD648C6722B"
-      },
+      "cacheTimeout": null,
+      "datasource": "Prometheus-Gen",
       "description": "",
       "fieldConfig": {
         "defaults": {
@@ -667,10 +688,8 @@
             "mode": "thresholds"
           },
           "custom": {
-            "align": "auto",
-            "displayMode": "auto",
-            "filterable": false,
-            "inspect": false
+            "align": null,
+            "filterable": false
           },
           "mappings": [],
           "thresholds": {
@@ -711,7 +730,8 @@
                 "value": "color-background"
               },
               {
-                "id": "custom.align"
+                "id": "custom.align",
+                "value": null
               },
               {
                 "id": "thresholds",
@@ -750,7 +770,8 @@
                 "value": 2
               },
               {
-                "id": "custom.align"
+                "id": "custom.align",
+                "value": null
               }
             ]
           },
@@ -769,7 +790,8 @@
                 "value": 2
               },
               {
-                "id": "custom.align"
+                "id": "custom.align",
+                "value": null
               }
             ]
           },
@@ -792,7 +814,8 @@
                 "value": []
               },
               {
-                "id": "custom.align"
+                "id": "custom.align",
+                "value": null
               }
             ]
           },
@@ -811,7 +834,8 @@
                 "value": 2
               },
               {
-                "id": "custom.align"
+                "id": "custom.align",
+                "value": null
               }
             ]
           },
@@ -830,7 +854,8 @@
                 "value": 2
               },
               {
-                "id": "custom.align"
+                "id": "custom.align",
+                "value": null
               }
             ]
           },
@@ -873,22 +898,15 @@
         ]
       },
       "gridPos": {
-        "h": 6,
+        "h": 7,
         "w": 24,
         "x": 0,
-        "y": 43
+        "y": 38
       },
       "id": 12,
       "interval": "",
       "links": [],
       "options": {
-        "footer": {
-          "fields": "",
-          "reducer": [
-            "sum"
-          ],
-          "show": false
-        },
         "showHeader": true,
         "sortBy": [
           {
@@ -897,13 +915,9 @@
           }
         ]
       },
-      "pluginVersion": "9.1.5",
+      "pluginVersion": "7.5.10",
       "targets": [
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "PAD1F3CD648C6722B"
-          },
           "exemplar": true,
           "expr": "((ssl_file_cert_not_after{instance=~\"$instance\",job=~\"$job\"} - time())/24/60/60)",
           "format": "table",
@@ -914,6 +928,8 @@
           "refId": "A"
         }
       ],
+      "timeFrom": null,
+      "timeShift": null,
       "title": "SSL Certificates files",
       "transformations": [
         {
@@ -927,7 +943,7 @@
     }
   ],
   "refresh": "5m",
-  "schemaVersion": 37,
+  "schemaVersion": 27,
   "style": "dark",
   "tags": [
     "ssl",
@@ -936,6 +952,7 @@
   "templating": {
     "list": [
       {
+        "allValue": null,
         "current": {
           "selected": true,
           "text": [
@@ -945,11 +962,10 @@
             "$__all"
           ]
         },
-        "datasource": {
-          "type": "prometheus",
-          "uid": "PAD1F3CD648C6722B"
-        },
+        "datasource": "Prometheus-Gen",
         "definition": "label_values(ssl_probe_success, job)",
+        "description": null,
+        "error": null,
         "hide": 0,
         "includeAll": true,
         "label": "Job",
@@ -965,11 +981,13 @@
         "skipUrlSync": false,
         "sort": 5,
         "tagValuesQuery": "",
+        "tags": [],
         "tagsQuery": "",
         "type": "query",
         "useTags": false
       },
       {
+        "allValue": null,
         "current": {
           "selected": true,
           "text": [
@@ -979,11 +997,10 @@
             "$__all"
           ]
         },
-        "datasource": {
-          "type": "prometheus",
-          "uid": "PAD1F3CD648C6722B"
-        },
+        "datasource": "Prometheus-Gen",
         "definition": "label_values({job=~\"$job\"}, instance)",
+        "description": null,
+        "error": null,
         "hide": 0,
         "includeAll": true,
         "label": "Instance",
@@ -999,6 +1016,7 @@
         "skipUrlSync": false,
         "sort": 1,
         "tagValuesQuery": "",
+        "tags": [],
         "tagsQuery": "",
         "type": "query",
         "useTags": false
@@ -1035,6 +1053,5 @@
   "timezone": "browser",
   "title": "SSL/TLS Exporter",
   "uid": "HyKQlVGWk",
-  "version": 1,
-  "weekStart": ""
+  "version": 1
 }
